@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdeccb"/><stop offset="1" stop-color="#efcf98"/></linearGradient>
+    <path id="sp" d="M0 -8 Q1 -1 8 0 Q1 1 0 8 Q-1 1 -8 0 Q-1 -1 0 -8Z"/>
+  </defs>
+  <g fill="url(#c)" stroke="#4a3a3a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="38" y="128" width="124" height="48" rx="24"/>
+    <rect x="54" y="98" width="92" height="44" rx="22"/>
+    <rect x="74" y="70" width="52" height="38" rx="19"/>
+    <path d="M94 72 Q96 44 116 40 Q112 54 124 68 Z"/>
+  </g>
+  <g fill="#fff" opacity=".6">
+    <ellipse cx="88" cy="80" rx="8" ry="4" transform="rotate(-20 88 80)"/>
+    <ellipse cx="70" cy="108" rx="9" ry="4" transform="rotate(-18 70 108)"/>
+    <ellipse cx="54" cy="138" rx="9" ry="4" transform="rotate(-18 54 138)"/>
+  </g>
+  <g fill="none" stroke="#3a2a2a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M66 134 L82 143 L66 152"/><path d="M134 134 L118 143 L134 152"/>
+    <path d="M90 158 L95 153 L100 158 L105 153 L110 158" stroke-width="3"/>
+  </g>
+  <ellipse cx="60" cy="156" rx="8" ry="5" fill="#ff9fb5" opacity=".85"/><ellipse cx="140" cy="156" rx="8" ry="5" fill="#ff9fb5" opacity=".85"/>
+  <g fill="#fff6b0" stroke="#e8c84a" stroke-width="1">
+    <use href="#sp" transform="translate(30 90)"/><use href="#sp" transform="translate(170 78)"/>
+    <use href="#sp" transform="translate(160 106) scale(.6)"/><use href="#sp" transform="translate(40 66) scale(.6)"/>
+  </g>
+</svg>

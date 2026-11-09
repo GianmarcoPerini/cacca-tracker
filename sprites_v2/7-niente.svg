@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <path id="sp" d="M0 -8 Q1 -1 8 0 Q1 1 0 8 Q-1 1 -8 0 Q-1 -1 0 -8Z"/>
+  </defs>
+  <circle cx="100" cy="106" r="66" fill="none" stroke="#c9c4c4" stroke-width="3" stroke-dasharray="0.1 9" stroke-linecap="round"/>
+  <g fill="none" stroke="#b9b2b2" stroke-width="2.4" stroke-linecap="round">
+    <path d="M40 150 q-12 -6 -6 -16 q10 -5 13 5 q1 8 -8 8"/>
+    <path d="M156 56 q12 -6 6 -16 q-10 -5 -13 5 q-1 8 8 8"/>
+    <path d="M166 150 q10 4 14 -4"/><path d="M26 66 q-4 -10 6 -14"/>
+  </g>
+  <g fill="#fff" stroke="#c9c4c4" stroke-width="1.5">
+    <use href="#sp" transform="translate(166 100) scale(1.2)"/><use href="#sp" transform="translate(30 104) scale(.9)"/>
+    <use href="#sp" transform="translate(150 164) scale(.8)"/><use href="#sp" transform="translate(52 44) scale(.8)"/>
+  </g>
+</svg>

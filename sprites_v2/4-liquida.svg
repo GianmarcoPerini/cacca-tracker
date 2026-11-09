@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdeccb"/><stop offset="1" stop-color="#efcf98"/></linearGradient>
+    <path id="sp" d="M0 -8 Q1 -1 8 0 Q1 1 0 8 Q-1 1 -8 0 Q-1 -1 0 -8Z"/>
+    <path id="sw" d="M0 0 C1.5 -1.5 4 -0.5 3.5 2 C3 5 -1 6 -4 4 C-7.5 1.5 -6 -4 -1 -6 C5 -7.5 9.5 -3 9 3"/>
+  </defs>
+  <g fill="url(#c)" stroke="#4a3a3a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M16 170 Q14 154 40 152 Q36 106 100 98 Q164 106 160 152 Q186 154 184 170 Q182 184 150 184 L50 184 Q18 184 16 170 Z"/>
+    <path d="M140 118 Q148 130 140 134 Q132 130 140 118 Z" fill="#9edcff" stroke="#3c8fc4" stroke-width="2"/>
+    <circle cx="150" cy="70" r="5"/><circle cx="168" cy="84" r="4"/>
+  </g>
+  <g fill="#fff" opacity=".6">
+    <ellipse cx="78" cy="116" rx="9" ry="4.5" transform="rotate(-25 78 116)"/>
+    <ellipse cx="34" cy="166" rx="7" ry="3.5" transform="rotate(-10 34 166)"/>
+  </g>
+  <g fill="none" stroke="#3a2a2a" stroke-width="2" stroke-linecap="round">
+    <use href="#sw" transform="translate(74 142) scale(1.6)"/>
+    <use href="#sw" transform="translate(126 142) scale(-1.6 1.6)"/>
+  </g>
+  <ellipse cx="100" cy="162" rx="6" ry="8" fill="#3a2a2a"/><ellipse cx="100" cy="166" rx="3.5" ry="3" fill="#ff8aa0"/>
+  <ellipse cx="56" cy="160" rx="8" ry="5" fill="#ff9fb5" opacity=".85"/><ellipse cx="144" cy="160" rx="8" ry="5" fill="#ff9fb5" opacity=".85"/>
+  <g fill="#fff6b0" stroke="#e8c84a" stroke-width="1">
+    <use href="#sp" transform="translate(30 96)"/><use href="#sp" transform="translate(22 124) scale(.6)"/>
+    <use href="#sp" transform="translate(176 120) scale(.6)"/>
+  </g>
+</svg>
