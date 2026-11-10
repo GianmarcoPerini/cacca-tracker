@@ -12,7 +12,7 @@ void main() {
     tester.view.devicePixelRatio = 2.75;
     addTearDown(tester.view.reset);
     final store = MemoryDayStore();
-    await tester.pumpWidget(TrackerCaccaApp(store: store, orologio: () => oggi));
+    await tester.pumpWidget(CaccalendarioApp(store: store, orologio: () => oggi));
     await tester.pumpAndSettle();
     return store;
   }
@@ -22,7 +22,7 @@ void main() {
     tester.view.physicalSize = const Size(720, 1184);
     tester.view.devicePixelRatio = 2;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(TrackerCaccaApp(store: MemoryDayStore(), orologio: () => oggi));
+    await tester.pumpWidget(CaccalendarioApp(store: MemoryDayStore(), orologio: () => oggi));
     await tester.pumpAndSettle();
 
     expect(find.byType(SingleChildScrollView), findsNothing);
@@ -36,7 +36,7 @@ void main() {
     tester.view.physicalSize = const Size(720, 960);
     tester.view.devicePixelRatio = 2;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(TrackerCaccaApp(store: MemoryDayStore(), orologio: () => oggi));
+    await tester.pumpWidget(CaccalendarioApp(store: MemoryDayStore(), orologio: () => oggi));
     await tester.pumpAndSettle();
     expect(find.byType(SingleChildScrollView), findsOneWidget);
   });

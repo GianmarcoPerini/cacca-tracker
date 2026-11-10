@@ -8,11 +8,11 @@ import 'src/home_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final store = await SqliteDayStore.apri();
-  runApp(TrackerCaccaApp(store: store));
+  runApp(CaccalendarioApp(store: store));
 }
 
-class TrackerCaccaApp extends StatelessWidget {
-  const TrackerCaccaApp({super.key, required this.store, this.orologio = DateTime.now});
+class CaccalendarioApp extends StatelessWidget {
+  const CaccalendarioApp({super.key, required this.store, this.orologio = DateTime.now});
 
   final DayStore store;
   final DateTime Function() orologio;
@@ -28,7 +28,7 @@ class TrackerCaccaApp extends StatelessWidget {
       onPrimary: Colors.white,
     );
     return MaterialApp(
-      title: 'Tracker Cacca',
+      title: 'Caccalendario',
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
       locale: const Locale('it'),

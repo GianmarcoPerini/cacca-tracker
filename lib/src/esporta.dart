@@ -50,7 +50,7 @@ class _DialogoEsportaState extends State<_DialogoEsporta> {
   bool _inCorso = false;
   String? _errore;
 
-  String get _nomeFile => 'tracker-cacca-${isoMese(widget.anno, widget.mese).substring(0, 7)}';
+  String get _nomeFile => 'caccalendario-${isoMese(widget.anno, widget.mese).substring(0, 7)}';
 
   Future<Uint8List> _creaPng() async {
     final boundary = _chiaveImmagine.currentContext!.findRenderObject()! as RenderRepaintBoundary;
@@ -85,7 +85,7 @@ class _DialogoEsportaState extends State<_DialogoEsporta> {
 
         await SharePlus.instance.share(ShareParams(
           files: [XFile(file.path, mimeType: 'image/png')],
-          subject: 'Tracker Cacca · ${maiuscola(mesi[widget.mese - 1])} ${widget.anno}',
+          subject: 'Caccalendario · ${maiuscola(mesi[widget.mese - 1])} ${widget.anno}',
           sharePositionOrigin: origine,
         ));
         if (mounted) Navigator.of(context).pop();

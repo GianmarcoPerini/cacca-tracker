@@ -44,6 +44,7 @@ class SqliteDayStore implements DayStore {
   /// Apre (o crea) il database. [factory] e [percorso] servono ai test.
   static Future<SqliteDayStore> apri({DatabaseFactory? factory, String? percorso}) async {
     final f = factory ?? databaseFactory;
+    // Il file mantiene il nome del primo nome dell'app, per non perdere i dati già salvati.
     final path = percorso ?? p.join(await f.getDatabasesPath(), 'tracker_cacca.db');
     final db = await f.openDatabase(
       path,

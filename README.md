@@ -1,4 +1,4 @@
-# Tracker Cacca
+# Caccalendario
 
 App Flutter (Android e iOS) per segnare i giorni in cui vai in bagno, con un calendario mensile e icone kawaii.
 
