@@ -1,13 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'src/colori.dart';
 import 'src/day_store.dart';
+import 'src/day_store_web.dart';
 import 'src/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final store = await SqliteDayStore.apri();
+  // Sul telefono SQLite; nel browser (versione web per iPhone) lo storage del browser.
+  final DayStore store = kIsWeb ? await PrefsDayStore.apri() : await SqliteDayStore.apri();
   runApp(CaccalendarioApp(store: store));
 }
 

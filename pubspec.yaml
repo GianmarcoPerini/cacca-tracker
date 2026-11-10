@@ -41,6 +41,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   gal: ^2.3.3
+  shared_preferences: ^2.5.6
 
 dev_dependencies:
   flutter_test:
@@ -73,3 +74,8 @@ flutter_launcher_icons:
   adaptive_icon_foreground: "assets/launcher/foreground.png"
   adaptive_icon_foreground_inset: 0
   adaptive_icon_monochrome: "assets/launcher/monochrome.png"
+  web:
+    generate: true
+    image_path: "assets/launcher/icon.png"
+    background_color: "#FFFFFF"
+    theme_color: "#FFF5F9"

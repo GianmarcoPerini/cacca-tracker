@@ -76,22 +76,43 @@ class _DialogoEsportaState extends State<_DialogoEsporta> {
   }
 
   Future<void> _condividi() => _esegui(() async {
-        final file = File(p.join((await getTemporaryDirectory()).path, '$_nomeFile.png'));
-        await file.writeAsBytes(await _creaPng(), flush: true);
+        final png = await _creaPng();
+        final XFile file;
+        if (kIsWeb) {
+          // Nel browser non c'è un file system: l'immagine passa direttamente dalla memoria.
+          file = XFile.fromData(png, name: '$_nomeFile.png', mimeType: 'image/png');
+        } else {
+          final f = File(p.join((await getTemporaryDirectory()).path, '$_nomeFile.png'));
+          await f.writeAsBytes(png, flush: true);
+          file = XFile(f.path, mimeType: 'image/png');
+        }
 
         // Su iPad il menu Condividi ha bisogno di un punto di ancoraggio.
         final box = _chiaveBottone.currentContext?.findRenderObject() as RenderBox?;
         final origine = box == null ? null : box.localToGlobal(Offset.zero) & box.size;
 
-        await SharePlus.instance.share(ShareParams(
-          files: [XFile(file.path, mimeType: 'image/png')],
-          subject: 'Caccalendario · ${maiuscola(mesi[widget.mese - 1])} ${widget.anno}',
-          sharePositionOrigin: origine,
-        ));
+        try {
+          await SharePlus.instance.share(ShareParams(
+            files: [file],
+            subject: 'Caccalendario · ${maiuscola(mesi[widget.mese - 1])} ${widget.anno}',
+            sharePositionOrigin: origine,
+          ));
+        } catch (_) {
+          // Browser senza condivisione di file: l'immagine viene scaricata.
+          if (!kIsWeb) rethrow;
+          await file.saveTo('$_nomeFile.png');
+        }
         if (mounted) Navigator.of(context).pop();
       }, (_) => "Non sono riuscito a creare l'immagine. Riprova.");
 
   Future<void> _salva() => _esegui(() async {
+        if (kIsWeb) {
+          // Nel browser non c'è la galleria: l'immagine si scarica e poi si salva in Foto da lì.
+          await XFile.fromData(await _creaPng(), name: '$_nomeFile.png', mimeType: 'image/png')
+              .saveTo('$_nomeFile.png');
+          if (mounted) Navigator.of(context).pop();
+          return;
+        }
         if (!await Gal.hasAccess() && !await Gal.requestAccess()) {
           throw const _PermessoNegato();
         }
@@ -169,7 +190,7 @@ class _DialogoEsportaState extends State<_DialogoEsporta> {
                       side: const BorderSide(color: Colori.inchiostro, width: 2),
                     ),
                     icon: const Icon(Icons.download_rounded),
-                    label: const Text('Salva'),
+                    label: Text(kIsWeb ? 'Scarica' : 'Salva'),
                   ),
                 ),
                 const SizedBox(width: 10),

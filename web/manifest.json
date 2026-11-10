@@ -1,11 +1,11 @@
 {
-    "name": "poop_diary",
-    "short_name": "poop_diary",
+    "name": "Caccalendario",
+    "short_name": "Caccalendario",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FFF5F9",
+    "theme_color": "#FFF5F9",
+    "description": "Diario kawaii dei giorni in bagno.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
@@ -31,5 +31,6 @@
             "type": "image/png",
             "purpose": "maskable"
         }
-    ]
+    ],
+    "lang": "it"
 }
