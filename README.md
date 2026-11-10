@@ -1,17 +1,19 @@
-# poop_diary
+# Tracker Cacca
 
-A new Flutter project.
+App Flutter (Android e iOS) per segnare i giorni in cui vai in bagno, con un calendario mensile e icone kawaii.
 
-## Getting Started
+- Calendario con la settimana che parte da lunedì. Si cambia mese con le frecce o con uno swipe. Non si possono registrare i giorni futuri.
+- 7 tipi in due colonne: Regolare, Tanta e Poca; Dura, Liquida e Morbida. Si sceglie al massimo un tipo per colonna. "Niente" esclude tutti gli altri.
+- I dati restano solo sul telefono, in un database SQLite locale (`lib/src/day_store.dart`).
+- Il bottone in alto esporta il mese come PNG, con la legenda, e apre il menu Condividi.
 
-This project is a starting point for a Flutter application.
+## Sviluppo
 
-A few resources to get you started if this is your first Flutter project:
+Flutter è in `C:\flutter`:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+C:/flutter/bin/flutter test
+C:/flutter/bin/flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Le icone dei tipi sono in `assets/icons/`, ritagliate dal set "Style A - Set 3". L'icona dell'app si rigenera con `dart run flutter_launcher_icons`.
