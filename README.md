@@ -16,4 +16,4 @@ C:/flutter/bin/flutter test
 C:/flutter/bin/flutter run
 ```
 
-Le icone dei tipi sono in `assets/icons/`, ritagliate dal set "Style A - Set 3". L'icona dell'app si rigenera con `dart run flutter_launcher_icons`.
+Le icone dei tipi sono in `assets/icons/`, ritagliate dal set "Style A - Set 3". Il corpo di ogni icona è ricolorato con la tinta del suo tipo, così i tipi si distinguono anche in piccolo: lo script è `tool/ricolora_icone.py` e parte dalle PNG originali (menta o beige). L'icona dell'app si rigenera con `dart run flutter_launcher_icons`.

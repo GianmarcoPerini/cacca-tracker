@@ -17,6 +17,30 @@ void main() {
     return store;
   }
 
+  testWidgets('su un telefono piccolo tutto sta in una schermata senza scroll', (tester) async {
+    // 360 x 592 dp: lo spazio utile dell'emulatore. Novembre 2026 ha 6 righe.
+    tester.view.physicalSize = const Size(720, 1184);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(TrackerCaccaApp(store: MemoryDayStore(), orologio: () => oggi));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(SingleChildScrollView), findsNothing);
+    final altezza = tester.view.physicalSize.height / tester.view.devicePixelRatio;
+    expect(tester.getBottomLeft(find.byKey(const ValueKey('tipo-niente'))).dy, lessThanOrEqualTo(altezza));
+    expect(tester.getBottomLeft(find.byKey(const ValueKey('giorno-2026-11-30'))).dy,
+        lessThan(tester.getTopLeft(find.byKey(const ValueKey('tipo-regolare'))).dy));
+  });
+
+  testWidgets('se lo schermo è troppo basso torna lo scroll', (tester) async {
+    tester.view.physicalSize = const Size(720, 960);
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(TrackerCaccaApp(store: MemoryDayStore(), orologio: () => oggi));
+    await tester.pumpAndSettle();
+    expect(find.byType(SingleChildScrollView), findsOneWidget);
+  });
+
   testWidgets('mostra solo il mese nel titolo e oggi è selezionato', (tester) async {
     await avvia(tester);
     expect(find.text('Novembre'), findsOneWidget);
@@ -37,7 +61,8 @@ void main() {
 
     expect(store.dati['2026-11-05'], {TipoCacca.regolare, TipoCacca.dura});
     final cella = find.byKey(const ValueKey('giorno-2026-11-05'));
-    expect(find.descendant(of: cella, matching: find.byType(Image)), findsNWidgets(2));
+    // Ogni icona è disegnata due volte: la sagoma bianca del bordo e l'immagine.
+    expect(find.descendant(of: cella, matching: find.byType(Image)), findsNWidgets(4));
 
     await tester.tap(find.byKey(const ValueKey('tipo-niente')));
     await tester.pump();

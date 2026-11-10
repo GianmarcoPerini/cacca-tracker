@@ -222,17 +222,6 @@ class ImmagineMese extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                children: [
-                  Image.asset(TipoCacca.regolare.asset, width: 30, height: 30),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'Tracker Cacca',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Colori.inchiostroTenue),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
               Text(
                 '${maiuscola(mesi[mese - 1])} $anno',
                 style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: Colori.inchiostro),

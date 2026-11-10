@@ -18,18 +18,17 @@ class PannelloTipi extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (var i = 0; i < sinistra.length; i++) ...[
-          if (i > 0) const SizedBox(height: 10),
+          if (i > 0) const SizedBox(height: 8),
           Row(
             children: [
               Expanded(child: _bottone(sinistra[i])),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(child: _bottone(destra[i])),
             ],
           ),
         ],
-        const SizedBox(height: 12),
-        const _Oppure(),
-        const SizedBox(height: 12),
+        // Spazio un po' più ampio: "Niente" esclude tutti gli altri tipi.
+        const SizedBox(height: 14),
         _bottone(TipoCacca.niente),
       ],
     );
@@ -43,39 +42,6 @@ class PannelloTipi extends StatelessWidget {
       );
 }
 
-class _Oppure extends StatelessWidget {
-  const _Oppure();
-
-  @override
-  Widget build(BuildContext context) {
-    Widget riga() => Expanded(
-          child: Container(
-            height: 2,
-            decoration: BoxDecoration(color: Colori.linea, borderRadius: BorderRadius.circular(2)),
-          ),
-        );
-    return ExcludeSemantics(
-      child: Row(
-        children: [
-          riga(),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              'OPPURE',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1,
-                color: Colori.inchiostroTenue,
-              ),
-            ),
-          ),
-          riga(),
-        ],
-      ),
-    );
-  }
-}
 
 class BottoneTipo extends StatelessWidget {
   const BottoneTipo({super.key, required this.tipo, required this.attivo, required this.onTap});
@@ -94,7 +60,7 @@ class BottoneTipo extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 120),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(raggioMedio),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: attivo
               ? const [BoxShadow(color: Color(0x4745365A), offset: Offset(0, 3))]
               : null,
@@ -102,32 +68,32 @@ class BottoneTipo extends StatelessWidget {
         child: Material(
           color: attivo ? tipo.colore : Colori.superficie,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(raggioMedio),
+            borderRadius: BorderRadius.circular(16),
             side: BorderSide(color: attivo ? Colori.inchiostro : Colori.linea, width: 2),
           ),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: onTap,
             child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 64),
+              constraints: const BoxConstraints(minHeight: 46),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(6, 8, 8, 8),
+                padding: const EdgeInsets.fromLTRB(5, 4, 8, 4),
                 child: Row(
                   children: [
                     // Icona con la spunta sull'angolo quando il tipo è attivo.
                     SizedBox(
-                      width: 46,
-                      height: 46,
+                      width: 38,
+                      height: 38,
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
                           Container(
-                            width: 44,
-                            height: 44,
-                            padding: const EdgeInsets.all(2),
+                            width: 36,
+                            height: 36,
+                            padding: const EdgeInsets.all(1),
                             decoration: BoxDecoration(
                               color: attivo ? const Color(0x99FFFFFF) : const Color(0xFFFBF7FB),
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(11),
                             ),
                             child: Image.asset(tipo.asset, fit: BoxFit.contain),
                           ),
@@ -136,14 +102,14 @@ class BottoneTipo extends StatelessWidget {
                               right: -4,
                               top: -4,
                               child: Container(
-                                width: 20,
-                                height: 20,
+                                width: 18,
+                                height: 18,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colori.inchiostro,
                                   border: Border.all(color: Colors.white, width: 2),
                                 ),
-                                child: const Icon(Icons.check_rounded, size: 13, color: Colors.white),
+                                child: const Icon(Icons.check_rounded, size: 12, color: Colors.white),
                               ),
                             ),
                         ],
@@ -157,7 +123,7 @@ class BottoneTipo extends StatelessWidget {
                         softWrap: false,
                         overflow: TextOverflow.fade,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: Colori.inchiostro,
                         ),

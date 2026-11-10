@@ -118,54 +118,76 @@ class _HomePageState extends State<HomePage> {
     mostraEsportazione(context, anno: _anno, mese: _mese, dati: Map.of(_dati), oggi: _oggi);
   }
 
+  /// Altezza minima per tenere tutto in una schermata; sotto si torna allo scroll.
+  static const _altezzaMinimaFissa = 560.0;
+
+  Widget _pannello() {
+    final visibile = _selezioneVisibile;
+    if (!visibile && _caricato) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 24),
+        child: Text(
+          'Tocca un giorno di questo mese per registrarlo.',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colori.inchiostroTenue, fontWeight: FontWeight.w600),
+        ),
+      );
+    }
+    return PannelloTipi(
+      selezionati: visibile ? (_dati[isoData(_selezionato)] ?? const {}) : const {},
+      onToggle: visibile ? _toggle : (_) {},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final oggi = _oggi;
-    final calendario = _CardCalendario(
-      anno: _anno,
-      mese: _mese,
-      dati: _dati,
-      oggi: oggi,
-      selezionato: _selezionato,
-      caricato: _caricato,
-      mostraOggi: !(oggi.year == _anno && oggi.month == _mese),
-      onCambiaMese: _cambiaMese,
-      onOggi: _tornaAOggi,
-      onTapGiorno: (d) => setState(() => _selezionato = d),
-    );
-    final pannello = _Card(
-      child: _selezioneVisibile || !_caricato
-          ? PannelloTipi(
-              selezionati: _selezioneVisibile ? (_dati[isoData(_selezionato)] ?? const {}) : const {},
-              onToggle: _selezioneVisibile ? _toggle : (_) {},
-            )
-          : const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: Text(
-                'Tocca un giorno di questo mese per registrarlo.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colori.inchiostroTenue, fontWeight: FontWeight.w600),
-              ),
-            ),
-    );
-
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, vincoli) {
             final largo = vincoli.maxWidth >= 840;
+            final testoGrande = MediaQuery.textScalerOf(context).scale(16) > 18.5;
+            // Su telefono tutto sta in una schermata: le celle si adattano all'altezza libera.
+            final fisso = !largo && !testoGrande && vincoli.maxHeight >= _altezzaMinimaFissa;
+
+            final calendario = _CardCalendario(
+              anno: _anno,
+              mese: _mese,
+              dati: _dati,
+              oggi: oggi,
+              selezionato: _selezionato,
+              caricato: _caricato,
+              adattaAltezza: fisso,
+              mostraOggi: !(oggi.year == _anno && oggi.month == _mese),
+              onCambiaMese: _cambiaMese,
+              onOggi: _tornaAOggi,
+              onEsporta: _esporta,
+              onTapGiorno: (d) => setState(() => _selezionato = d),
+            );
+            final pannello = _Card(child: _pannello());
+
+            if (fisso) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Flexible(child: calendario),
+                    const SizedBox(height: 12),
+                    pannello,
+                  ],
+                ),
+              );
+            }
+
             return SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1040),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _Testata(onEsporta: _esporta),
-                      const SizedBox(height: 16),
-                      if (largo)
-                        Row(
+                  child: largo
+                      ? Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(flex: 13, child: calendario),
@@ -173,46 +195,16 @@ class _HomePageState extends State<HomePage> {
                             Expanded(flex: 10, child: pannello),
                           ],
                         )
-                      else ...[
-                        calendario,
-                        const SizedBox(height: 18),
-                        pannello,
-                      ],
-                    ],
-                  ),
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [calendario, const SizedBox(height: 18), pannello],
+                        ),
                 ),
               ),
             );
           },
         ),
       ),
-    );
-  }
-}
-
-class _Testata extends StatelessWidget {
-  const _Testata({required this.onEsporta});
-
-  final VoidCallback onEsporta;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ExcludeSemantics(child: Image.asset(TipoCacca.regolare.asset, width: 52, height: 52)),
-        const SizedBox(width: 12),
-        const Expanded(
-          child: Text(
-            'Tracker Cacca',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: Colori.inchiostro, height: 1.1),
-          ),
-        ),
-        _BottoneTondo(
-          icona: Icons.ios_share_rounded,
-          etichetta: 'Esporta il mese come immagine',
-          onTap: onEsporta,
-        ),
-      ],
     );
   }
 }
@@ -225,7 +217,7 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colori.superficie,
         borderRadius: BorderRadius.circular(raggioGrande),
@@ -244,9 +236,11 @@ class _CardCalendario extends StatelessWidget {
     required this.oggi,
     required this.selezionato,
     required this.caricato,
+    required this.adattaAltezza,
     required this.mostraOggi,
     required this.onCambiaMese,
     required this.onOggi,
+    required this.onEsporta,
     required this.onTapGiorno,
   });
 
@@ -256,14 +250,30 @@ class _CardCalendario extends StatelessWidget {
   final DateTime oggi;
   final DateTime selezionato;
   final bool caricato;
+  final bool adattaAltezza;
   final bool mostraOggi;
   final ValueChanged<int> onCambiaMese;
   final VoidCallback onOggi;
+  final VoidCallback onEsporta;
   final ValueChanged<DateTime> onTapGiorno;
 
   @override
   Widget build(BuildContext context) {
     final spazio = MediaQuery.sizeOf(context).width >= 560 ? 8.0 : 5.0;
+    final griglia = AnimatedOpacity(
+      opacity: caricato ? 1 : 0.5,
+      duration: const Duration(milliseconds: 120),
+      child: GrigliaMese(
+        anno: anno,
+        mese: mese,
+        dati: dati,
+        oggi: oggi,
+        selezionato: selezionato,
+        onTap: onTapGiorno,
+        spazio: spazio,
+        adattaAltezza: adattaAltezza,
+      ),
+    );
     return _Card(
       child: GestureDetector(
         // Swipe orizzontale per cambiare mese, oltre alle frecce.
@@ -273,6 +283,7 @@ class _CardCalendario extends StatelessWidget {
           onCambiaMese(v < 0 ? 1 : -1);
         },
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
@@ -290,7 +301,7 @@ class _CardCalendario extends StatelessWidget {
                       maiuscola(mesi[mese - 1]),
                       key: const ValueKey('titolo-mese'),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w800, color: Colori.inchiostro),
+                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Colori.inchiostro),
                     ),
                   ),
                 ),
@@ -300,12 +311,25 @@ class _CardCalendario extends StatelessWidget {
                   etichetta: 'Mese successivo',
                   onTap: () => onCambiaMese(1),
                 ),
+                const SizedBox(width: 8),
+                _BottoneTondo(
+                  key: const ValueKey('esporta'),
+                  icona: Icons.ios_share_rounded,
+                  etichetta: 'Esporta il mese come immagine',
+                  dimensioneIcona: 22,
+                  onTap: onEsporta,
+                ),
               ],
             ),
             if (mostraOggi)
               Center(
                 child: TextButton(
                   onPressed: onOggi,
+                  style: TextButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  ),
                   child: const Text(
                     'Torna a oggi',
                     style: TextStyle(
@@ -317,22 +341,10 @@ class _CardCalendario extends StatelessWidget {
                   ),
                 ),
               ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             IntestazioneSettimana(spazio: spazio),
             const SizedBox(height: 6),
-            AnimatedOpacity(
-              opacity: caricato ? 1 : 0.5,
-              duration: const Duration(milliseconds: 120),
-              child: GrigliaMese(
-                anno: anno,
-                mese: mese,
-                dati: dati,
-                oggi: oggi,
-                selezionato: selezionato,
-                onTap: onTapGiorno,
-                spazio: spazio,
-              ),
-            ),
+            if (adattaAltezza) Flexible(child: griglia) else griglia,
           ],
         ),
       ),
@@ -341,11 +353,18 @@ class _CardCalendario extends StatelessWidget {
 }
 
 class _BottoneTondo extends StatelessWidget {
-  const _BottoneTondo({super.key, required this.icona, required this.etichetta, required this.onTap});
+  const _BottoneTondo({
+    super.key,
+    required this.icona,
+    required this.etichetta,
+    required this.onTap,
+    this.dimensioneIcona = 28,
+  });
 
   final IconData icona;
   final String etichetta;
   final VoidCallback onTap;
+  final double dimensioneIcona;
 
   @override
   Widget build(BuildContext context) {
@@ -358,9 +377,9 @@ class _BottoneTondo extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: SizedBox(
-            width: 48,
-            height: 48,
-            child: Icon(icona, color: Colori.inchiostro, size: 28, semanticLabel: etichetta),
+            width: 44,
+            height: 44,
+            child: Icon(icona, color: Colori.inchiostro, size: dimensioneIcona, semanticLabel: etichetta),
           ),
         ),
       ),

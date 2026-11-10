@@ -10,8 +10,7 @@ abstract final class Colori {
   static const rosaForte = Color(0xFFF27BA6);
   static const lilla = Color(0xFFE3D6FA);
   static const menta = Color(0xFFC6EEDD);
-  static const cella = Color(0xFFFFF9FC);
-  static const cellaOggi = Color(0xFFFFEAF2);
+  static const giornoRegistrato = Color(0xFFF6EEFA); // unico colore tenue dei giorni registrati
   static const weekend = Color(0xFFB0457A);
   static const futuro = Color(0xFFA99BB6);
   static const frecciaSfondo = Color(0xFFFDF0F6);
